@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KSPS Back Office</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">K</div>
+        <div>
+          <strong>KORNERSTONE</strong>
+          <small>BACK OFFICE</small>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-item active" data-view="dashboard">Dashboard</button>
+        <button class="nav-item" data-view="leads">Leads</button>
+        <button class="nav-item" data-view="audits">Audits</button>
+        <button class="nav-item" data-view="proposals">Proposals</button>
+        <button class="nav-item" data-view="clients">Clients</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <span class="pill">DEMO MODE</span>
+        <small>Data saves only in this browser for now.</small>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">KSPS OPERATIONS</p>
+          <h1 id="pageTitle">Growth Dashboard</h1>
+        </div>
+        <button class="btn accent" id="addLeadBtn">+ Add Lead</button>
+      </header>
+
+      <section class="view active" id="dashboardView">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <span>Active Leads</span>
+            <strong id="statLeads">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Follow-Ups Due</span>
+            <strong id="statFollowups">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Audits Scheduled</span>
+            <strong id="statAudits">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>Proposals Out</span>
+            <strong id="statProposals">0</strong>
+          </article>
+        </div>
+
+        <div class="panel-grid">
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">PIPELINE</p>
+                <h2>Lead Activity</h2>
+              </div>
+              <button class="text-btn" data-jump="leads">View all</button>
+            </div>
+            <div id="recentLeads" class="mini-list"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">NEXT UP</p>
+                <h2>Follow-Ups</h2>
+              </div>
+            </div>
+            <div id="followupList" class="mini-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="leadsView">
+        <div class="toolbar">
+          <input id="searchInput" type="search" placeholder="Search property, company, contact...">
+          <select id="statusFilter">
+            <option value="">All statuses</option>
+            <option>New Lead</option>
+            <option>Contacted</option>
+            <option>Warm Lead</option>
+            <option>Audit Scheduled</option>
+            <option>Proposal Sent</option>
+            <option>Negotiating</option>
+            <option>Signed</option>
+            <option>Not a Fit</option>
+          </select>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Lead ID</th>
+                <th>Property</th>
+                <th>Management Co.</th>
+                <th>Units</th>
+                <th>Status</th>
+                <th>Follow-Up</th>
+                <th>Next Action</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="leadTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="view" id="auditsView">
+        <div class="empty-state">
+          <div class="trash-icon">K</div>
+          <h2>Property Audits</h2>
+          <p>Phase 2 will connect your site walkthrough form, complexity score, photos, and pricing recommendation here.</p>
+        </div>
+      </section>
+
+      <section class="view" id="proposalsView">
+        <div class="empty-state">
+          <div class="trash-icon">K</div>
+          <h2>Proposal Tracker</h2>
+          <p>Phase 2 will let you track proposal date, pricing, follow-up, decision maker, and close probability.</p>
+        </div>
+      </section>
+
+      <section class="view" id="clientsView">
+        <div class="empty-state">
+          <div class="trash-icon">K</div>
+          <h2>Active Properties</h2>
+          <p>Signed properties will eventually move here with service schedule, routes, workers, equipment storage, and contract dates.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="leadDialog">
+    <form method="dialog" id="leadForm">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">NEW PROSPECT</p>
+          <h2 id="dialogTitle">Add Lead</h2>
+        </div>
+        <button type="button" class="icon-btn" id="closeDialog">×</button>
+      </div>
+
+      <input type="hidden" id="leadId">
+
+      <div class="form-grid">
+        <label>Property Name
+          <input id="propertyName" required>
+        </label>
+        <label>Management Company
+          <input id="managementCompany">
+        </label>
+        <label>Property Type
+          <select id="propertyType">
+            <option>Apartment</option>
+            <option>Senior Living</option>
+            <option>Student Housing</option>
+            <option>Mixed Use</option>
+            <option>Condominium</option>
+          </select>
+        </label>
+        <label>Units
+          <input id="units" type="number" min="0">
+        </label>
+        <label>Address
+          <input id="address">
+        </label>
+        <label>Area / Submarket
+          <input id="submarket" placeholder="South End, University, Steele Creek...">
+        </label>
+        <label>Contact Name
+          <input id="contactName">
+        </label>
+        <label>Email
+          <input id="email" type="email">
+        </label>
+        <label>Phone
+          <input id="phone">
+        </label>
+        <label>Status
+          <select id="status">
+            <option>New Lead</option>
+            <option>Contacted</option>
+            <option>Warm Lead</option>
+            <option>Audit Scheduled</option>
+            <option>Proposal Sent</option>
+            <option>Negotiating</option>
+            <option>Signed</option>
+            <option>Not a Fit</option>
+          </select>
+        </label>
+        <label>Follow-Up Date
+          <input id="followUpDate" type="date">
+        </label>
+        <label>Next Action
+          <input id="nextAction" placeholder="Call PM, schedule audit, send proposal...">
+        </label>
+        <label class="full">Notes
+          <textarea id="notes" rows="4"></textarea>
+        </label>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="button" class="btn ghost" id="deleteLeadBtn">Delete</button>
+        <div>
+          <button type="button" class="btn ghost" id="cancelLeadBtn">Cancel</button>
+          <button type="submit" class="btn accent">Save Lead</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
