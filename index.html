@@ -165,7 +165,7 @@
         <h2>REQUEST A WASTE AUDIT.</h2>
         <p>Every property is different. We assess layout, access, service needs, and operational complexity so your proposal is built around the actual community.</p>
       </div>
-      <a class="btn btn-dark" href="https://forms.gle/8qVsE6ZEoEvBXLe5A" target="_blank" rel="noopener">Request Audit</a>
+      <a class="btn btn-dark" href="https://forms.gle/hsfh5GYrnToHuRmx5" target="_blank" rel="noopener">Request Audit</a>
     </section>
 
     <section id="why" class="why section-shell">
@@ -192,24 +192,52 @@
         <p>Tell us about your community and we will follow up with the right next step.</p>
       </div>
 
-      <form class="lead-form" onsubmit="return false;">
-        <label>
-          Property Name
-          <input type="text" name="property" placeholder="Community name" />
+      <form class="lead-form" id="proposalForm" action="https://formspree.io/f/xljrvvvd" method="POST">
+        <input type="hidden" name="lead_source" value="KSPS Website" />
+
+        <label>Property Name *
+          <input type="text" name="property_name" placeholder="Community name" required />
         </label>
-        <label>
-          Your Name
-          <input type="text" name="name" placeholder="First and last name" />
+        <label>Contact Name *
+          <input type="text" name="contact_name" placeholder="First and last name" required />
         </label>
-        <label>
-          Email
-          <input type="email" name="email" placeholder="you@property.com" />
+        <label>Business Email *
+          <input type="email" name="email" placeholder="you@property.com" required />
         </label>
-        <label>
-          Units
-          <input type="number" name="units" placeholder="Approx. unit count" />
+        <label>Phone Number
+          <input type="tel" name="phone" placeholder="(704) 555-0123" />
         </label>
-        <a class="btn btn-accent form-btn" href="https://forms.gle/8qVsE6ZEoEvBXLe5A" target="_blank" rel="noopener">Request a Proposal</a>
+        <label>Approximate Unit Count *
+          <input type="number" name="unit_count" min="1" placeholder="Approx. unit count" required />
+        </label>
+        <label>Property Type *
+          <select name="property_type" required>
+            <option value="" selected disabled>Select property type</option>
+            <option>Apartment Community</option>
+            <option>Senior Living</option>
+            <option>Student Housing / Campus</option>
+            <option>Mixed-Use Residential</option>
+            <option>Other</option>
+          </select>
+        </label>
+        <label>Service Interested In *
+          <select name="service_interest" required>
+            <option value="" selected disabled>Select a service</option>
+            <option>Valet Trash Collection</option>
+            <option>Bulk Item Removal</option>
+            <option>Property Support Services</option>
+            <option>Multiple Services</option>
+            <option>Not Sure Yet</option>
+          </select>
+        </label>
+        <label>Management Company
+          <input type="text" name="management_company" placeholder="If known" />
+        </label>
+        <label class="full">How can we help?
+          <textarea name="message" rows="5" placeholder="Tell us about your property, current needs, or what you'd like us to evaluate."></textarea>
+        </label>
+        <div class="form-status full" id="proposalFormStatus" aria-live="polite"></div>
+        <button class="btn btn-accent form-btn" id="proposalSubmitBtn" type="submit">Request a Proposal</button>
       </form>
     </section>
   </main>

@@ -459,3 +459,18 @@ img { display: block; width: 100%; }
   .footer { grid-template-columns: 1fr; }
   .footer-links { justify-content: flex-start; }
 }
+
+
+/* Formspree inline proposal form */
+.lead-form select,.lead-form textarea{width:100%;border:1px solid var(--line);background:transparent;padding:0 14px;font:inherit;color:var(--green)}
+.lead-form select{height:52px}
+.lead-form textarea{min-height:130px;padding-top:14px;resize:vertical}
+.lead-form .full{grid-column:1/-1}
+.lead-form button.form-btn{grid-column:1/-1;width:100%;border:0;cursor:pointer}
+.lead-form button.form-btn:disabled{opacity:.6;cursor:wait;transform:none}
+.form-status{display:none;padding:16px 18px;border:1px solid var(--line);font-size:13px;line-height:1.5}
+.form-status.show{display:block}
+.form-status.error{background:rgba(150,40,40,.07);color:#7a2d2d}
+.form-success-card{grid-column:1/-1;padding:34px;background:var(--green-2);color:white;text-align:center}
+.form-success-card strong{display:block;font-family:"Archivo Black",sans-serif;font-size:clamp(24px,4vw,42px);text-transform:uppercase;line-height:1;margin-bottom:12px}
+.form-success-card p{margin:0 auto;max-width:560px;color:rgba(255,255,255,.78)}
