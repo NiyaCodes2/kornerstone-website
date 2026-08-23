@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0F2E24" />
+  <title>KSPS Field Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="field-console.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#audit" aria-label="KSPS Field Console">
+      <span class="brand-k">K</span>
+      <span>
+        <strong>KORNERSTONE</strong>
+        <small>FIELD CONSOLE</small>
+      </span>
+    </a>
+
+    <nav class="tabs" aria-label="Console sections">
+      <button class="tab active" data-tab="audit">Waste Audit</button>
+      <button class="tab" data-tab="saved">Saved Audits</button>
+      <button class="tab" data-tab="settings">Pricing Settings</button>
+    </nav>
+
+    <button class="ghost-btn" id="newAuditTop">+ New Audit</button>
+  </header>
+
+  <main>
+    <section id="audit" class="screen active">
+      <div class="audit-layout">
+        <form id="auditForm" class="audit-form">
+          <div class="hero-card">
+            <div>
+              <p class="eyebrow">KSPS PROPERTY WASTE AUDIT</p>
+              <h1>Walk it. Score it. Quote it.</h1>
+              <p class="lede">Complete the property walkthrough and KSPS will estimate route labor, collectors, cost, and a suggested monthly quote in real time.</p>
+            </div>
+            <div class="audit-id">
+              <span>AUDIT ID</span>
+              <strong id="auditIdLabel">KSPS-A001</strong>
+            </div>
+          </div>
+
+          <section class="form-section">
+            <div class="section-title">
+              <span>01</span>
+              <div><h2>Property Profile</h2><p>Basic facts we can usually research before the walkthrough.</p></div>
+            </div>
+
+            <div class="grid two">
+              <label>Property Name *
+                <input id="propertyName" required placeholder="Community name" />
+              </label>
+              <label>Management Company
+                <input id="managementCompany" placeholder="Greystar, Bell Partners..." />
+              </label>
+              <label>Property Type
+                <select id="propertyType">
+                  <option>Apartment Community</option>
+                  <option>Senior Living</option>
+                  <option>Student Housing / Campus</option>
+                  <option>Mixed-Use Residential</option>
+                  <option>Condominium</option>
+                </select>
+              </label>
+              <label>Billable / Serviceable Units *
+                <input id="units" type="number" min="1" value="150" required />
+              </label>
+              <label class="full">Address
+                <input id="address" placeholder="Street, city, state" />
+              </label>
+              <label>Property Contact
+                <input id="contactName" placeholder="Property manager / regional manager" />
+              </label>
+              <label>Contact Email
+                <input id="contactEmail" type="email" placeholder="manager@property.com" />
+              </label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title">
+              <span>02</span>
+              <div><h2>Service Request</h2><p>What are they asking KSPS to do?</p></div>
+            </div>
+
+            <div class="grid three">
+              <label>Account Classification
+                <select id="accountType">
+                  <option value="standalone">Standalone Property</option>
+                  <option value="addon">Route Add-On Property</option>
+                </select>
+              </label>
+              <label>Service Schedule
+                <select id="serviceSchedule">
+                  <option>Night</option>
+                  <option>Daytime</option>
+                  <option>Custom</option>
+                </select>
+              </label>
+              <label>Nights / Days per Week
+                <input id="serviceNights" type="number" min="1" max="7" value="4" />
+              </label>
+              <label>Requested Window
+                <input id="serviceWindow" value="7 PM–12 AM" />
+              </label>
+            </div>
+
+            <div id="addonFields" class="addon-fields hidden">
+              <div class="grid three">
+                <label>Existing KSPS Route / Cluster
+                  <input id="routeCluster" placeholder="e.g., South End Route" />
+                </label>
+                <label>Incremental Route Hours / Service Day
+                  <input id="addonHours" type="number" min="0.25" step="0.25" value="0.5" />
+                </label>
+                <label>Incremental Business Miles / Service Day
+                  <input id="addonMiles" type="number" min="0" step="0.5" value="1" />
+                </label>
+              </div>
+              <p class="field-note">Use Route Add-On only when this property can share an existing KSPS crew/route without creating a separate shift.</p>
+            </div>
+            <div class="check-grid">
+              <label class="check"><input type="checkbox" id="svcValet" checked /> Valet Trash</label>
+              <label class="check"><input type="checkbox" id="svcBulk" /> Bulk Item Removal</label>
+              <label class="check"><input type="checkbox" id="svcSupport" /> Property Support</label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title">
+              <span>03</span>
+              <div><h2>Physical Layout</h2><p>These variables drive collection speed and staffing.</p></div>
+            </div>
+
+            <div class="grid three">
+              <label>Buildings
+                <input id="buildings" type="number" min="1" value="6" />
+              </label>
+              <label>Highest Floor
+                <input id="floors" type="number" min="1" value="3" />
+              </label>
+              <label>Property Spread
+                <select id="spread">
+                  <option value="0">Compact</option>
+                  <option value="1" selected>Moderate</option>
+                  <option value="2">Spread Out</option>
+                </select>
+              </label>
+              <label>Vertical Access
+                <select id="vertical">
+                  <option value="0">Elevator / Mostly Level</option>
+                  <option value="1">Mixed Elevators + Stairs</option>
+                  <option value="2" selected>Stairs / Walk-Ups</option>
+                </select>
+              </label>
+              <label>Interior / Exterior
+                <select id="corridor">
+                  <option>Exterior / Garden Style</option>
+                  <option>Interior Corridors</option>
+                  <option>Mixed</option>
+                </select>
+              </label>
+              <label>Terrain
+                <select id="terrain">
+                  <option value="0">Flat / Easy</option>
+                  <option value="1">Some Hills / Curbs</option>
+                  <option value="2">Difficult Terrain</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="check-grid">
+              <label class="check"><input id="gated" type="checkbox" /> Gated / controlled access</label>
+              <label class="check"><input id="parking" type="checkbox" /> Difficult worker parking</label>
+              <label class="check"><input id="longBreezeways" type="checkbox" /> Long breezeways / corridors</label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title">
+              <span>04</span>
+              <div><h2>Waste Journey</h2><p>Follow the route from the resident door to final disposal.</p></div>
+            </div>
+
+            <div class="grid three">
+              <label>Disposal Type
+                <select id="disposalType">
+                  <option>Dumpster</option>
+                  <option>Compactor</option>
+                  <option>Multiple Dumpsters</option>
+                  <option>Trash Rooms + Compactor</option>
+                </select>
+              </label>
+              <label>Disposal Locations
+                <input id="disposalCount" type="number" min="1" value="1" />
+              </label>
+              <label>Average Disposal Distance
+                <select id="disposalDistance">
+                  <option value="0">Close</option>
+                  <option value="1" selected>Moderate</option>
+                  <option value="2">Far</option>
+                </select>
+              </label>
+              <label>Waste Volume
+                <select id="wasteVolume">
+                  <option value="0">Normal</option>
+                  <option value="1">Moderate / Variable</option>
+                  <option value="2">Heavy / Known Issues</option>
+                </select>
+              </label>
+              <label>Business Miles / Service Night
+                <input id="businessMiles" type="number" min="0" step="0.5" value="0" />
+              </label>
+              <label>Carts Needed
+                <input id="carts" type="number" min="1" value="2" />
+              </label>
+            </div>
+
+            <div class="check-grid">
+              <label class="check"><input id="vehicleTransfer" type="checkbox" /> Vehicle transfer needed onsite</label>
+              <label class="check"><input id="overflow" type="checkbox" /> Overflow issues observed</label>
+              <label class="check"><input id="bulkIssues" type="checkbox" /> Frequent bulk-item issues</label>
+              <label class="check"><input id="storageAvailable" type="checkbox" checked /> Secure onsite cart storage available</label>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title">
+              <span>05</span>
+              <div><h2>Current Vendor & Pain Points</h2><p>Useful for both the proposal and follow-up strategy.</p></div>
+            </div>
+
+            <div class="grid two">
+              <label>Existing Valet Vendor?
+                <select id="existingVendor">
+                  <option>Unknown</option>
+                  <option>No</option>
+                  <option>Yes</option>
+                </select>
+              </label>
+              <label>Contract Expiration / Renewal
+                <input id="contractExpiration" type="date" />
+              </label>
+            </div>
+
+            <div class="check-grid">
+              <label class="check"><input class="pain" value="Resident complaints" type="checkbox" /> Resident complaints</label>
+              <label class="check"><input class="pain" value="Maintenance workload" type="checkbox" /> Maintenance workload</label>
+              <label class="check"><input class="pain" value="Breezeway cleanliness" type="checkbox" /> Breezeway cleanliness</label>
+              <label class="check"><input class="pain" value="Overflow" type="checkbox" /> Overflow / dumpster issues</label>
+              <label class="check"><input class="pain" value="Missed pickups" type="checkbox" /> Missed pickups</label>
+              <label class="check"><input class="pain" value="Bulk waste" type="checkbox" /> Bulk waste</label>
+            </div>
+
+            <label class="block">Walkthrough Notes
+              <textarea id="notes" rows="5" placeholder="Anything unusual about access, resident habits, property layout, manager concerns, etc."></textarea>
+            </label>
+          </section>
+
+          <section class="form-section">
+            <div class="section-title">
+              <span>06</span>
+              <div><h2>Bins & Launch Equipment</h2><p>Keep one-time implementation costs separate from monthly service economics.</p></div>
+            </div>
+
+            <div class="grid two">
+              <label>Doorstep Bin Option
+                <select id="binOption">
+                  <option value="none">No KSPS-provided bins</option>
+                  <option value="property">Property purchases bins upfront</option>
+                  <option value="finance">KSPS finances bins into service price</option>
+                </select>
+              </label>
+              <label>Estimated Bin Cost / Unit
+                <input id="binCost" type="number" min="0" step="0.01" value="0" />
+              </label>
+              <label>Other One-Time Startup Cost
+                <input id="startupCost" type="number" min="0" step="1" value="0" />
+              </label>
+              <label>Special Equipment / Notes
+                <input id="equipmentNotes" placeholder="Extra carts, key fobs, etc." />
+              </label>
+            </div>
+          </section>
+
+          <div class="bottom-actions">
+            <button type="button" class="secondary" id="resetAudit">Reset</button>
+            <button type="submit" class="primary">Save Audit + Quote</button>
+          </div>
+        </form>
+
+        <aside class="quote-panel">
+          <div class="sticky-quote">
+            <p class="eyebrow light">LIVE KSPS ESTIMATE</p>
+            <div class="complexity-line">
+              <span>Route Complexity</span>
+              <strong id="complexityLabel">STANDARD</strong>
+            </div>
+
+            <div class="scorebar"><span id="scoreFill"></span></div>
+            <small id="complexityMeta">Score 0 • 75 doors / labor-hour</small>
+
+            <div class="ops-grid">
+              <div><span>Total Labor</span><strong id="laborHours">0.0 h</strong><small>/ service day</small></div>
+              <div><span>Collectors</span><strong id="collectors">1</strong><small id="collectorWhy">target ≤ 2.5 h each</small></div>
+              <div><span>Paid Hours</span><strong id="paidHours">0.0 h</strong><small>/ service day</small></div>
+              <div><span>Service Days</span><strong id="daysPerMonth">0</strong><small>/ month</small></div>
+            </div>
+
+            <div class="quote-rule"></div>
+
+            <span class="quote-label">SUGGESTED MONTHLY QUOTE</span>
+            <strong class="big-price" id="monthlyQuote">$0</strong>
+            <div class="per-door"><span id="perDoor">$0.00</span> / door / month</div>
+
+            <div class="economics">
+              <div><span>True Monthly Cost</span><strong id="trueCost">$0</strong></div>
+              <div><span>Monthly Contribution</span><strong id="contribution">$0</strong></div>
+              <div><span>Projected Margin</span><strong id="margin">0%</strong></div>
+              <div><span>Annual Contract Value</span><strong id="annualValue">$0</strong></div>
+              <div><span>Implementation Fee</span><strong id="implementationFee">$0</strong></div>
+            </div>
+
+            <div class="floor-box">
+              <span>Pricing floor is the highest of:</span>
+              <div><small>Cost + $500 contribution</small><strong id="contributionFloor">$0</strong></div>
+              <div><small>35% target margin</small><strong id="marginFloor">$0</strong></div>
+              <div><small>KSPS account minimum</small><strong id="accountFloor">$1,500</strong></div>
+            </div>
+
+            <div class="health" id="healthBadge">QUOTE READY</div>
+            <div class="override-box">
+              <label class="override-check"><input id="overrideToggle" type="checkbox" /> Owner pricing override</label>
+              <div id="overrideFields" class="hidden">
+                <label>Override Monthly Quote<input id="overridePrice" type="number" min="0" step="25" /></label>
+                <small id="overrideWarning"></small>
+              </div>
+            </div>
+            <div class="quote-actions">
+              <button type="button" class="outline-light" id="copySummary">Copy Internal Summary</button>
+              <button type="button" class="client-quote-btn" id="generateQuote">Generate Client Quote</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="saved" class="screen">
+      <div class="page-head">
+        <div><p class="eyebrow">LOCAL FIELD RECORDS</p><h1>Saved Audits</h1></div>
+        <button class="primary" id="newAuditSaved">+ New Waste Audit</button>
+      </div>
+      <div class="notice">
+        V1 saves audits only in this browser/device. This is perfect for testing the workflow, but it is not yet a shared database. Supabase + login is the next upgrade.
+      </div>
+      <div id="savedAuditList" class="saved-grid"></div>
+    </section>
+
+    <section id="settings" class="screen">
+      <div class="page-head">
+        <div><p class="eyebrow">PRICING ENGINE</p><h1>KSPS Assumptions</h1></div>
+        <button class="primary" id="saveSettings">Save Settings</button>
+      </div>
+
+      <div class="settings-grid">
+        <section class="settings-card">
+          <h2>Labor</h2>
+          <label>Collector Wage / Hour <input id="sWage" type="number" step="0.01" /></label>
+          <label>Payroll Burden % <input id="sBurden" type="number" step="0.01" /></label>
+          <label>Minimum Paid Hours / Collector / Service Day <input id="sMinPaid" type="number" step="0.25" /></label>
+          <label>Max Target Route Hours / Collector <input id="sMaxRoute" type="number" step="0.25" /></label>
+        </section>
+
+        <section class="settings-card">
+          <h2>Pricing</h2>
+          <label>Minimum Account Contribution <input id="sMinContribution" type="number" step="25" /></label>
+          <label>Minimum Monthly Account <input id="sAccountMin" type="number" step="25" /></label>
+          <label>Target Margin % <input id="sMargin" type="number" step="0.01" /></label>
+          <label>Risk Reserve % <input id="sRisk" type="number" step="0.01" /></label>
+        </section>
+
+        <section class="settings-card">
+          <h2>Operations</h2>
+          <label>Mileage Reimbursement / Mile <input id="sMileage" type="number" step="0.01" /></label>
+          <label>Weeks / Month <input id="sWeeks" type="number" step="0.01" /></label>
+          <label>Base Route Overhead Hours / Service Day <input id="sRouteOverhead" type="number" step="0.05" /></label>
+          <label>Monthly Overhead Allocation / Property <input id="sOverhead" type="number" step="5" /></label>
+        </section>
+
+        <section class="settings-card">
+          <h2>Equipment</h2>
+          <label>Rolling Cart Cost <input id="sCartCost" type="number" step="1" /></label>
+          <label>Cart Useful Life / Months <input id="sCartLife" type="number" step="1" /></label>
+          <label>Monthly Bags / PPE / Supplies <input id="sSupplies" type="number" step="5" /></label>
+          <label>Bin Recovery / Months <input id="sBinRecovery" type="number" step="1" /></label>
+        </section>
+
+        <section class="settings-card">
+          <h2>Route Productivity</h2>
+          <p class="settings-note">These are placeholders until KSPS collects real route data.</p>
+          <label>Easy Property — Doors / Labor-Hour <input id="sEasyRate" type="number" step="1" /></label>
+          <label>Standard Property — Doors / Labor-Hour <input id="sStandardRate" type="number" step="1" /></label>
+          <label>Complex Property — Doors / Labor-Hour <input id="sComplexRate" type="number" step="1" /></label>
+        </section>
+
+        <section class="settings-card attention">
+          <h2>⚠ Validate Before First Contract</h2>
+          <p>Insurance, workers' comp, actual payroll burden, bin pricing, and real route productivity are still assumptions. Replace these values as quotes and operating data become available.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="quote-modal hidden" id="quoteModal">
+  <div class="quote-modal-toolbar no-print"><button class="secondary" id="closeQuote">← Back to Audit</button><div><button class="secondary" id="copyClientQuote">Copy Client Summary</button><button class="primary" id="printQuote">Print / Save PDF</button></div></div>
+  <article class="client-proposal">
+    <header class="proposal-head"><div class="proposal-brand"><span class="proposal-k">K</span><div><strong>KORNERSTONE</strong><small>PROPERTY SOLUTIONS</small></div></div><div class="proposal-tag">TOTAL WASTE CONTROL.</div></header>
+    <section class="proposal-hero"><p>PROPERTY WASTE SERVICE PROPOSAL</p><h1 id="pProperty">Property Name</h1><div class="proposal-meta"><span>Prepared <strong id="pDate"></strong></span><span>Proposal <strong id="pProposalId"></strong></span><span>Valid for <strong>30 days</strong></span></div></section>
+    <section class="proposal-section"><p class="proposal-kicker">RECOMMENDED SERVICE PLAN</p><h2>A cleaner property starts at the door.</h2><div class="proposal-grid"><div><span>Service</span><strong>Doorstep Valet Waste Collection</strong></div><div><span>Frequency</span><strong id="pFrequency"></strong></div><div><span>Service Window</span><strong id="pWindow"></strong></div><div><span>Serviceable Residences</span><strong id="pUnits"></strong></div></div></section>
+    <section class="proposal-price-band"><div><span>MONTHLY SERVICE INVESTMENT</span><strong id="pMonthly"></strong><small id="pPerDoor"></small></div><div><span>ONE-TIME IMPLEMENTATION</span><strong id="pImplementation"></strong><small>Property onboarding & approved launch equipment</small></div></section>
+    <section class="proposal-section"><p class="proposal-kicker">WHAT'S INCLUDED</p><div class="included-grid"><div>✓ Scheduled doorstep waste collection</div><div>✓ Uniformed KSPS service personnel</div><div>✓ Transport to designated onsite disposal</div><div>✓ Property issue observation & reporting</div><div>✓ Routine service oversight</div><div>✓ Property-specific launch coordination</div></div></section>
+    <section class="proposal-section optional-services"><p class="proposal-kicker">ADDITIONAL PROPERTY SUPPORT</p><div id="pOptionalServices">Bulk-item removal and property-support services are available upon request and quoted separately.</div></section>
+    <section class="proposal-next"><div><p class="proposal-kicker">NEXT STEP</p><h2>Approve the service plan.</h2><p>Upon approval, KSPS will prepare the service agreement, confirm the property launch plan, and coordinate the service start date.</p></div><div class="proposal-contact"><strong>Kornerstone Property Solutions</strong><span>Charlotte, North Carolina</span><span>kornerstone-ps.com</span></div></section>
+    <footer class="proposal-footer">Pricing is based on property information available at the time of the waste audit and is subject to final property verification and an executed service agreement. Optional or out-of-scope services may be quoted separately.</footer>
+  </article>
+</div>
+<div class="toast" id="toast"></div>
+  <script src="field-console.js"></script>
+</body>
+</html>
